@@ -1,0 +1,12 @@
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\bin\Debug\net6.0\WebApplication3.Domain.deps.json
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\bin\Debug\net6.0\WebApplication3.Domain.dll
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\bin\Debug\net6.0\WebApplication3.Domain.pdb
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.csproj.AssemblyReference.cache
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.AssemblyInfoInputs.cache
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.AssemblyInfo.cs
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.csproj.CoreCompileInputs.cache
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.dll
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\refint\WebApplication3.Domain.dll
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\WebApplication3.Domain.pdb
+E:\.net\WebApplication3.webapi\WebApplication3.Domain\obj\Debug\net6.0\ref\WebApplication3.Domain.dll
