@@ -105,6 +105,30 @@ namespace WebApplication3.Infrastructure.Services
             return userDatas;
         }
 
+        public async Task<ResponseDTO> UpdateUserDetails(string id, UserDetailsDTO model)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return new ResponseDTO { Status = "Error", Message = "User not found!" };
+            }
+
+            user.Email = model.Email;
+            user.UserName = model.UserName;
+            user.EmailConfirmed = model.IsEmailConfirmed;
+            
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return new ResponseDTO { Status = "Error", Message = "Failed to update user details!" };
+            }
+
+            return new ResponseDTO { Status = "Success", Message = "User details updated successfully!" };
+        }
+
 
 
 

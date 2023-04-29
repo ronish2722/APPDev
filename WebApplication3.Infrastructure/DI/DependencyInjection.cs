@@ -51,7 +51,10 @@ namespace WebApplication3.Infrastructure.DI
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IAuthentication, AuthenticationService>();
             services.AddTransient<ICarService, CarService>();
-            
+            services.AddTransient<IAddress, AddressService>();
+            services.AddTransient<IOffer, OfferService>();
+            services.AddTransient<IRequest, RequestService>();
+
 
 
 

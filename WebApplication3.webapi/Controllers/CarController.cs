@@ -19,7 +19,7 @@ namespace WebApplication3.webapi.Controllers
             _carService = carService;
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<Car> AddCarDetails(AddCarDTO car) 
         {
             var data = await _carService.AddCarDetails(car);
@@ -36,7 +36,7 @@ namespace WebApplication3.webapi.Controllers
             return car;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllCars")]
         public async Task<ActionResult<List<Car>>> GetAllCars()
         {
             var cars = await _carService.GetAllCars();

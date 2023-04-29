@@ -69,6 +69,23 @@ namespace WebApplication3.webapi.Controllers
             };
             return Ok(userResponse);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUserDetails(string id, UserDetailsDTO model)
+        {
+            // Get the user ID from the authenticated user's claims
+            
+
+            
+
+            var result = await _authenticationManager.UpdateUserDetails(id, model);
+
+            if (result.Status == "Error")
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
 
         [HttpPost("api/authenticate/logout")]
 

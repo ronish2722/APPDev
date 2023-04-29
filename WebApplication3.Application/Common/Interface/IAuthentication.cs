@@ -13,6 +13,8 @@ namespace WebApplication3.Application.Common.Interface
         Task<ResponseDTO> Login(UserLoginRequestDTO model);
         Task<IEnumerable<UserDetailsDTO>> GetUserDetails();
 
+        Task<ResponseDTO> UpdateUserDetails(string id, UserDetailsDTO model);
+
 
     }
 }
