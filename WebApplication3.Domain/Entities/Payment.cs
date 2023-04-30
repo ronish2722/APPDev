@@ -24,14 +24,14 @@ namespace WebApplication3.Domain.Entities
 
         public virtual Request Requests { get; set; }
 
-        public string PaymentInfo { get; set; }
+        public string? PaymentInfo { get; set; }
 
         public float Amount { get; set; }
 
         [ForeignKey("Damage")]
-        public int DamageId { get; set; }
+        public int? DamageId { get; set; }
 
-        public virtual DamageForm Damage { get; set; }
+        public virtual DamageForm? Damage { get; set; }
 
     }
 }

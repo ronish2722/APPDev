@@ -158,7 +158,7 @@ namespace WebApplication3.Infrastructure.Persistance
                 {
                     entity.HasKey(e => e.PaymentId);
 
-                    entity.Property(e => e.PaymentInfo).HasMaxLength(500);
+                    entity.Property(e => e.PaymentInfo).HasDefaultValue("UnPaid");
 
                     entity.HasOne(e => e.User)
                         .WithMany()
