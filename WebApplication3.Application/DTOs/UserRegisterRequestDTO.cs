@@ -20,6 +20,11 @@ namespace WebApplication3.Application.DTOs
 
         [Required(ErrorMessage ="Password is Required")]
 
+        public string? PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "PhoneNumber is Required")]
+        
+
         public string? Password { get; set; }
     }
 }
