@@ -31,7 +31,7 @@ namespace WebApplication3.Domain.Entities
         [ForeignKey("Damage")]
         public int DamageId { get; set; }
 
-        public virtual Damage Damage { get; set; }
+        public virtual DamageForm Damage { get; set; }
 
     }
 }

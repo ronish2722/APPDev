@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication3.Domain.Entities
 {
-    public class Damage
+    public class DamageNotice
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,15 +19,17 @@ namespace WebApplication3.Domain.Entities
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
 
-        [ForeignKey("StaffUser")]
-        public string VerifiedBy { get; set; }
-        public IdentityUser StaffUser { get; set; }
+        
 
         [ForeignKey("Car")]
         public int CarID { get; set; }
         public virtual Car Car { get; set; }
 
-        public float Amount { get; set; }
+
+
+        public DateTime Date { get; set; }
+
+        public string description { get; set; }
 
     }
 }

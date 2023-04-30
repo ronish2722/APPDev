@@ -26,9 +26,13 @@ namespace WebApplication3.Infrastructure.Services
             var carDetails = new Car()
             {
                 CarName = car.CarName,
+                Image = car.Image,
                 Brand = car.Brand,
+                Price =car.Price,
+                Condition = car.Condition,
                 Description = car.Description,
                 NumberOfRents = car.NumberOfRents,
+                CreatedBy = car.CreatedBy,
             };
             await _dbContext.Car.AddAsync(carDetails);
             await _dbContext.SaveChangesAsync();
@@ -49,9 +53,13 @@ namespace WebApplication3.Infrastructure.Services
                 carDTOs.Add(new AddCarDTO
                 {
                     CarName = car.CarName,
+                    Image = car.Image,
                     Brand = car.Brand,
+                    Price = car.Price,
+                    Condition = car.Condition,
                     Description = car.Description,
-                    NumberOfRents = (int)car.NumberOfRents
+                    NumberOfRents = (int)car.NumberOfRents,
+                    CreatedBy = car.CreatedBy,
 
                     // Map other properties as needed
                 });
@@ -67,7 +75,10 @@ namespace WebApplication3.Infrastructure.Services
                 throw new Exception("Car not found");
             }
             car.CarName = carDto.CarName;
+            car.Image = carDto.Image;   
             car.Brand = carDto.Brand;
+            car.Price = carDto.Price;
+            car.Condition = carDto.Condition;
             car.Description = carDto.Description;
             car.NumberOfRents = carDto.NumberOfRents;
             // Update other properties as needed

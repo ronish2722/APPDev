@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplication3.Domain.Entities
 {
@@ -13,6 +14,7 @@ namespace WebApplication3.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CarId { get; set; }
+        public string Image { get; set; }
 
         public string CarName { get; set; }
 
@@ -22,9 +24,17 @@ namespace WebApplication3.Domain.Entities
 
         public string CarStatus { get; set; }
 
+        public float Price { get; set; }
+
+        public string Condition { get; set; }
+
         public int? NumberOfRents { get; set; }
 
-        public ICollection<Damage> Damages { get; set; }
+        [ForeignKey("StaffUser")]
+        public string CreatedBy { get; set; }
+        public IdentityUser StaffUser { get; set; }
+
+        public ICollection<DamageNotice> Damages { get; set; }
 
         public ICollection<Request> Requests { get; set; }
 

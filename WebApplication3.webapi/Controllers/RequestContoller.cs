@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Specialized;
 using WebApplication3.Application.Common.Interface;
 using WebApplication3.Application.DTOs;
 using WebApplication3.Domain.Entities;
@@ -34,6 +35,20 @@ namespace WebApplication3.webapi.Controllers
             return request;
         }
 
+        [HttpGet("GetRequestsByUser/")]
+        public async Task<ActionResult<List<Request>>> GetRequestByUser(string userId)
+        {
+            var request = await _requestService.GetRequestByUser(userId);
+            return Ok(request);
+        }
+
+        [HttpGet("GetRequestsByCar/")]
+        public async Task<ActionResult<List<Request>>> GetRequestByCar(int carId)
+        {
+            var request = await _requestService.GetRequestByCar(carId);
+            return Ok(request);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Request>>> GetAllRequest()
         {
@@ -58,6 +73,33 @@ namespace WebApplication3.webapi.Controllers
             {
                 return NotFound(ex.Message);
             }
+        }
+
+
+        [HttpPost("{id}/accept")]
+        public async Task<IActionResult> AcceptRequest(int id, string approvedBy)
+        {
+            var success = await _requestService.AcceptRequest(id, approvedBy);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/decline")]
+        public async Task<IActionResult> DeclineRequest(int id, string approvedBy)
+        {
+            var success = await _requestService.DeclineRequest(id, approvedBy);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]

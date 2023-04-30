@@ -12,7 +12,7 @@ namespace WebApplication3.Application.DTOs
         public DateTime RequestedDate { get; set; }
         public int CarID { get; set; }
 
-        public string ApprovedBy { get; set; }
+        public string? ApprovedBy { get; set; }
         public string status { get; set; }
     }
 }

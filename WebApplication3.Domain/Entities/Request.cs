@@ -22,8 +22,8 @@ namespace WebApplication3.Domain.Entities
         public IdentityUser User { get; set; }
 
         [ForeignKey("StaffUser")]
-        public string ApprovedBy { get; set; }
-        public IdentityUser StaffUser { get; set; }
+        public string? ApprovedBy { get; set; }
+        public IdentityUser? StaffUser { get; set; }
 
         [ForeignKey("Car")]
         public int CarID { get; set; }

@@ -16,9 +16,9 @@ namespace WebApplication3.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AttachmentId { get; set; }
 
-        public string DrivingLicense { get; set; }
+        public string? DrivingLicense { get; set; }
 
-        public string Citizenship { get; set; }
+        public string? Citizenship { get; set; }
 
         public int NumberOfRents { get; set; }
 

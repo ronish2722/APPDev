@@ -54,9 +54,8 @@ namespace WebApplication3.Infrastructure.DI
             services.AddTransient<IAddress, AddressService>();
             services.AddTransient<IOffer, OfferService>();
             services.AddTransient<IRequest, RequestService>();
-
-
-
+            services.AddTransient<IDamageRequest, DamageRequestService>();
+            services.AddTransient<IDamageForm, DamageFormService>();
 
             return services;
 

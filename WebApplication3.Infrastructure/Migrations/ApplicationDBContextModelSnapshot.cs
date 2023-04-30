@@ -256,18 +256,20 @@ namespace WebApplication3.Infrastructure.Migrations
 
                     b.Property<string>("ActivityStatus")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("Citizenship")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DrivingLicense")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("NumberOfRents")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -282,10 +284,11 @@ namespace WebApplication3.Infrastructure.Migrations
 
             modelBuilder.Entity("WebApplication3.Domain.Entities.Car", b =>
                 {
-                    b.Property<Guid>("CarId")
+                    b.Property<int>("CarId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CarId"));
 
                     b.Property<string>("Brand")
                         .IsRequired()
@@ -301,7 +304,19 @@ namespace WebApplication3.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Available");
 
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -311,12 +326,52 @@ namespace WebApplication3.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.HasKey("CarId");
+
+                    b.HasIndex("CreatedBy");
 
                     b.ToTable("Car");
                 });
 
-            modelBuilder.Entity("WebApplication3.Domain.Entities.Damage", b =>
+            modelBuilder.Entity("WebApplication3.Domain.Entities.DamageForm", b =>
+                {
+                    b.Property<int>("DamageFormId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DamageFormId"));
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
+
+                    b.Property<int>("DamageId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("VerifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("DamageFormId");
+
+                    b.HasIndex("DamageId");
+
+                    b.HasIndex("VerifiedBy");
+
+                    b.ToTable("DamageForm");
+                });
+
+            modelBuilder.Entity("WebApplication3.Domain.Entities.DamageNotice", b =>
                 {
                     b.Property<int>("DamageId")
                         .ValueGeneratedOnAdd()
@@ -324,27 +379,26 @@ namespace WebApplication3.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DamageId"));
 
-                    b.Property<float>("Amount")
-                        .HasColumnType("real");
+                    b.Property<int>("CarID")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("CarID")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("VerifiedBy")
+                    b.Property<string>("description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("DamageId");
 
                     b.HasIndex("CarID");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("VerifiedBy");
 
                     b.ToTable("Damage");
                 });
@@ -371,6 +425,9 @@ namespace WebApplication3.Infrastructure.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("image")
+                        .HasColumnType("text");
 
                     b.Property<string>("type")
                         .IsRequired()
@@ -433,14 +490,13 @@ namespace WebApplication3.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RequestId"));
 
                     b.Property<string>("ApprovedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CarID")
-                        .HasColumnType("uuid");
+                    b.Property<int>("CarID")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid?>("CarId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("CarId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("RequestedDate")
                         .HasColumnType("timestamp with time zone");
@@ -560,7 +616,37 @@ namespace WebApplication3.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebApplication3.Domain.Entities.Damage", b =>
+            modelBuilder.Entity("WebApplication3.Domain.Entities.Car", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "StaffUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("StaffUser");
+                });
+
+            modelBuilder.Entity("WebApplication3.Domain.Entities.DamageForm", b =>
+                {
+                    b.HasOne("WebApplication3.Domain.Entities.DamageNotice", "Damage")
+                        .WithMany()
+                        .HasForeignKey("DamageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "StaffUser")
+                        .WithMany()
+                        .HasForeignKey("VerifiedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Damage");
+
+                    b.Navigation("StaffUser");
+                });
+
+            modelBuilder.Entity("WebApplication3.Domain.Entities.DamageNotice", b =>
                 {
                     b.HasOne("WebApplication3.Domain.Entities.Car", "Car")
                         .WithMany("Damages")
@@ -574,15 +660,7 @@ namespace WebApplication3.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "StaffUser")
-                        .WithMany()
-                        .HasForeignKey("VerifiedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Car");
-
-                    b.Navigation("StaffUser");
 
                     b.Navigation("User");
                 });
@@ -600,7 +678,7 @@ namespace WebApplication3.Infrastructure.Migrations
 
             modelBuilder.Entity("WebApplication3.Domain.Entities.Payment", b =>
                 {
-                    b.HasOne("WebApplication3.Domain.Entities.Damage", "Damage")
+                    b.HasOne("WebApplication3.Domain.Entities.DamageForm", "Damage")
                         .WithMany()
                         .HasForeignKey("DamageId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -630,8 +708,7 @@ namespace WebApplication3.Infrastructure.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "StaffUser")
                         .WithMany()
                         .HasForeignKey("ApprovedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebApplication3.Domain.Entities.Car", "Car")
                         .WithMany()

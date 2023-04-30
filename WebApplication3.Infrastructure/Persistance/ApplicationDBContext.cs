@@ -29,7 +29,7 @@ namespace WebApplication3.Infrastructure.Persistance
         public DbSet<Attachment> Attachment { get; set; }
         public DbSet<Car> Car { get; set; }
 
-        public DbSet<Damage> Damage { get; set; }
+        public DbSet<DamageNotice> Damage { get; set; }
         public DbSet<Offer> Offer { get; set; }
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Request> Request { get; set; }
@@ -37,6 +37,8 @@ namespace WebApplication3.Infrastructure.Persistance
         public DbSet<UserAddress> UserAddress { get; set; }
         public DbSet<UserOffer> UserOffer { get; set; }
 
+        public DbSet<DamageForm> DamageForm { get; set; }
+             
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -61,10 +63,10 @@ namespace WebApplication3.Infrastructure.Persistance
                 modelBuilder.Entity<Attachment>(entity =>
                 {
                     entity.HasKey(e => e.AttachmentId);
-                    entity.Property(e => e.DrivingLicense).IsRequired();
-                    entity.Property(e => e.Citizenship).IsRequired();
-                    entity.Property(e => e.NumberOfRents).IsRequired();
-                    entity.Property(e => e.ActivityStatus).IsRequired();
+                    entity.Property(e => e.DrivingLicense);
+                    entity.Property(e => e.Citizenship);
+                    entity.Property(e => e.NumberOfRents).HasDefaultValue(0);
+                    entity.Property(e => e.ActivityStatus).HasDefaultValue("Active");
 
                     entity.HasOne(d => d.User)
                         .WithMany()
@@ -74,31 +76,38 @@ namespace WebApplication3.Infrastructure.Persistance
 
                 modelBuilder.Entity<Car>(entity =>
                 {
-                    entity.Property(e => e.CarId)
-                       
-                       .HasDefaultValueSql("gen_random_uuid()");
+                    entity.HasKey(e => e.CarId); ;
+                    entity.Property(e => e.Image);
                     entity.Property(e => e.CarName).IsRequired();
                     entity.Property(e => e.Brand).IsRequired();
+                    entity.Property(e => e.Price).IsRequired();
+                    entity.Property(e => e.Condition).IsRequired();
                     entity.Property(e => e.Description).IsRequired();
+                    entity.HasOne(e => e.StaffUser)
+                        .WithMany()
+                        .HasForeignKey(e => e.CreatedBy)
+                        .OnDelete(DeleteBehavior.Restrict);
                     entity.Property(e => e.NumberOfRents).IsRequired().HasDefaultValue(0);
                     entity.Property(e => e.CarStatus).HasDefaultValue("Available");
 
                 });
 
-                modelBuilder.Entity<Damage>(entity =>
+                modelBuilder.Entity<DamageNotice>(entity =>
                 {
                     entity.HasKey(e => e.DamageId);
-                    entity.Property(e => e.Amount).IsRequired();
+                    //entity.Property(e => e.Amount).IsRequired();
 
                     entity.HasOne(e => e.User)
                         .WithMany()
                         .HasForeignKey(e => e.UserId)
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    entity.HasOne(e => e.StaffUser)
-                        .WithMany()
-                        .HasForeignKey(e => e.VerifiedBy)
-                        .OnDelete(DeleteBehavior.Restrict);
+                    //entity.HasOne(e => e.StaffUser)
+                    //    .WithMany()
+                    //    .HasForeignKey(e => e.VerifiedBy)
+                    //    .OnDelete(DeleteBehavior.Restrict);
+                    entity.Property(e => e.Date).IsRequired();
+                    entity.Property(e => e.description).HasMaxLength(500);
 
                     entity.HasOne(e => e.Car)
                         .WithMany(c => c.Damages)
@@ -106,10 +115,28 @@ namespace WebApplication3.Infrastructure.Persistance
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity<DamageForm>(entity =>
+            {
+                entity.HasKey(e => e.DamageFormId);
+                entity.HasOne(e => e.StaffUser)
+                    .WithMany()
+                    .HasForeignKey(e => e.VerifiedBy)
+                    .OnDelete(DeleteBehavior.Restrict);
+                entity.Property(e => e.Date).IsRequired();
+                entity.Property(e => e.description).HasMaxLength(500);
+                entity.HasOne(e => e.Damage)
+                        .WithMany()
+                        .HasForeignKey(e => e.DamageId)
+                        .OnDelete(DeleteBehavior.Restrict);
+                entity.Property(e => e.Amount).IsRequired();
+
+
+            });
+
                 modelBuilder.Entity<Offer>(entity =>
                 {
                     entity.HasKey(e => e.OfferId);
-
+                    entity.Property(e => e.image);
                     entity.Property(e => e.StartDate).IsRequired();
                     entity.Property(e => e.EndDate).IsRequired();
                     entity.Property(e => e.type).HasMaxLength(50).IsRequired();

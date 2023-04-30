@@ -23,6 +23,8 @@ namespace WebApplication3.Domain.Entities
 
         public float value { get; set; }
 
+        public string? image { get; set; }
+
         public string OfferDescription { get; set; }
 
         [ForeignKey("StaffUser")]
