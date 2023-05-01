@@ -28,5 +28,10 @@ namespace WebApplication3.Domain.Entities
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
 
+
+        [ForeignKey("Address")]
+        public int AddressID { get; set; }
+        public virtual Address Address { get; set; }
+
     }
 }

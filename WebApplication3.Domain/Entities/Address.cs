@@ -21,6 +21,6 @@ namespace WebApplication3.Domain.Entities
 
         public int PostalCode { get; set; }
 
-        public ICollection<UserAddress> UserAddresses { get; set; } 
+        //public ICollection<UserAddress> UserAddresses { get; set; } 
     }
 }

@@ -97,6 +97,10 @@ namespace WebApplication3.Infrastructure.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        //public async Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents)
+        //{ 
+        
+        //}
 
 
 

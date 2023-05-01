@@ -20,7 +20,7 @@ namespace WebApplication3.Application.Common.Interface
         DbSet<Payment> Payment { get; set; }
         DbSet<Request> Request { get; set; }
 
-        DbSet<UserAddress> UserAddress { get; set; }
+        //DbSet<UserAddress> UserAddress { get; set; }
         DbSet<UserOffer> UserOffer { get; set; }
 
         DbSet<DamageForm> DamageForm { get; set; }

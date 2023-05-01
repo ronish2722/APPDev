@@ -19,5 +19,7 @@ namespace WebApplication3.Application.Common.Interface
         Task<Car> UpdateCarAsync(int id, AddCarDTO car);
 
         Task DeleteCarAsync(int id);
+
+        //Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents);
     }
 }

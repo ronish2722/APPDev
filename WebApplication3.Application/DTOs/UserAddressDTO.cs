@@ -10,8 +10,8 @@ namespace WebApplication3.Application.DTOs
 {
     public class UserAddressDTO
     {
-        public string UserId { get; set; }
+        //public string UserId { get; set; }
         
-        public int AddressID { get; set; }
+        //public int AddressID { get; set; }
     }
 }

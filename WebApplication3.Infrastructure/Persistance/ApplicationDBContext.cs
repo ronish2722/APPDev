@@ -34,7 +34,7 @@ namespace WebApplication3.Infrastructure.Persistance
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Request> Request { get; set; }
 
-        public DbSet<UserAddress> UserAddress { get; set; }
+        //public DbSet<UserAddress> UserAddress { get; set; }
         public DbSet<UserOffer> UserOffer { get; set; }
 
         public DbSet<DamageForm> DamageForm { get; set; }
@@ -42,8 +42,8 @@ namespace WebApplication3.Infrastructure.Persistance
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserAddress>()
-            .HasKey(ua => new { ua.UserId, ua.AddressID });
+            //modelBuilder.Entity<UserAddress>()
+            //.HasKey(ua => new { ua.UserId, ua.AddressID });
 
             modelBuilder.Entity<UserOffer>()
             .HasKey(ua => new { ua.UserId, ua.OfferId });
@@ -72,6 +72,11 @@ namespace WebApplication3.Infrastructure.Persistance
                         .WithMany()
                         .HasForeignKey(d => d.UserId)
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    entity.HasOne(d => d.Address)
+                        .WithMany()
+                        .HasForeignKey(d => d.AddressID)
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
                 modelBuilder.Entity<Car>(entity =>
@@ -201,20 +206,20 @@ namespace WebApplication3.Infrastructure.Persistance
 
 
 
-                modelBuilder.Entity<UserAddress>(entity =>
-                {
-                    entity.HasKey(e => new { e.UserId, e.AddressID });
+                //modelBuilder.Entity<UserAddress>(entity =>
+                //{
+                //    entity.HasKey(e => new { e.UserId, e.AddressID });
 
-                    //entity.HasOne(d => d.User)
-                    //    .WithOne()
-                    //    .HasForeignKey(d => d.UserId)
-                    //    .OnDelete(DeleteBehavior.Cascade);
+                //    //entity.HasOne(d => d.User)
+                //    //    .WithOne()
+                //    //    .HasForeignKey(d => d.UserId)
+                //    //    .OnDelete(DeleteBehavior.Cascade);
 
-                    entity.HasOne(d => d.Address)
-                        .WithMany(p => p.UserAddresses)
-                        .HasForeignKey(d => d.AddressID)
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                //    entity.HasOne(d => d.Address)
+                //        .WithMany(p => p.UserAddresses)
+                //        .HasForeignKey(d => d.AddressID)
+                //        .OnDelete(DeleteBehavior.Cascade);
+                //});
 
                 modelBuilder.Entity<UserOffer>(entity =>
                 {

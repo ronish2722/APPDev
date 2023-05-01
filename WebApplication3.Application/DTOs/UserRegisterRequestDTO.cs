@@ -18,7 +18,15 @@ namespace WebApplication3.Application.DTOs
 
         public string? Email { get; set; }
 
-        [Required(ErrorMessage ="Password is Required")]
+        [Required(ErrorMessage = "Password is Required")]
+
+        public string? AddressName { get; set; }
+
+        public string? Country { get; set; }
+
+        public string? City { get; set; }
+
+        public int? PostalCode { get; set; }
 
         public string? PhoneNumber { get; set; }
 
@@ -26,5 +34,9 @@ namespace WebApplication3.Application.DTOs
         
 
         public string? Password { get; set; }
+
+        public string? CitizenshipOrDrivingLicense { get; set; }
+
+
     }
 }

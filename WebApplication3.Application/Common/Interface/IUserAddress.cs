@@ -10,11 +10,11 @@ namespace WebApplication3.Application.Common.Interface
 {
     public interface IUserAddress
     {
-        Task<UserAddress> AddUserAddressDetails(UserAddressDTO userAddress);
+        //Task<UserAddress> AddUserAddressDetails(UserAddressDTO userAddress);
 
-        Task<List<UserAddressDTO>> GetAllUserAddress();
+        //Task<List<UserAddressDTO>> GetAllUserAddress();
 
-        Task<List<UserAddressDTO>> GetUserAddressByUser(string userId);
+        //Task<List<UserAddressDTO>> GetUserAddressByUser(string userId);
 
         //Task<UserAddress> UpdateUserAddressAsync(int id, UserAddressDTO userAddressDto);
 

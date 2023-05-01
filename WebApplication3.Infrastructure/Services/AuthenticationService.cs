@@ -6,7 +6,11 @@ using System;
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Reflection.Metadata;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WebApplication3.Application.Common.Interface;
@@ -23,11 +27,13 @@ namespace WebApplication3.Infrastructure.Services
         //private readonly AttachmentService _attachmentService;
 
 
-        public AuthenticationService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,  IConfiguration configuration)
+        public AuthenticationService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,  IConfiguration configuration, IApplicationDBContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            
+            _dbContext = dbContext;
+            //_attachmentService
+
 
         }
         public async Task<ResponseDTO> Register(UserRegisterRequestDTO model)
@@ -48,13 +54,45 @@ namespace WebApplication3.Infrastructure.Services
             var result = await _userManager.CreateAsync(user, model.Password);
             await _userManager.AddToRoleAsync(user, "User");
 
+
+            Address address = new Address()
+            {
+                AddressName = model.AddressName,
+                Country = model.Country,
+                City = model.City,
+                PostalCode = (int)model.PostalCode,
+            };
+
+            _dbContext.Address.Add(address);
+            await _dbContext.SaveChangesAsync();
+
+
+            Domain.Entities.Attachment attachment1 = new Domain.Entities.Attachment()
+            {
+                DrivingLicense = model.CitizenshipOrDrivingLicense,
+                Citizenship = "string",
+                NumberOfRents = 0,
+                ActivityStatus = "Active",
+                UserId = user.Id,
+                AddressID = address.AddressId,
+            };
+            _dbContext.Attachment.Add(attachment1);
+
+            await _dbContext.SaveChangesAsync();
+
+
             if (!result.Succeeded)
 
                 return
                         new ResponseDTO
                         { Status = "Error", Message = "User creation failed! Please check user details and try again." };
 
-            //attachmentDTO.UserId = user.Id;
+            var attachmentDTO = new AttachmentDTO
+            {
+                UserId = user.Id,
+                
+            };
+
             //await _attachmentService.AddAttachmentDetails(attachmentDTO);
 
             return new ResponseDTO { Status = "Success", Message = "User created successfully!" };
@@ -135,10 +173,6 @@ namespace WebApplication3.Infrastructure.Services
                 return new ResponseDTO { Status = "Error", Message = "Failed to update user details!" };
 
             }
-
-            
-            
-
 
             return new ResponseDTO { Status = "Success", Message = "User details updated successfully!" };
         }
