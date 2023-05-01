@@ -13,13 +13,14 @@ namespace WebApplication3.Application.Common.Interface
         Task<Request> GetRequest(int id);
         Task<Request> CreateRequestAsync(RentRequestDTO requestDto);
 
-        Task<List<RentRequestDTO>> GetRequestByUser(string userId);
+        Task<List<RentRequestDTO>> GetRequestByUser(string userId, DateTime? fromDate, DateTime? toDate);
 
         Task<List<RentRequestDTO>> GetRequestByCar(int carId);
 
         Task<bool> AcceptRequest(int requestId, string approvedBy);
 
         Task<bool> DeclineRequest(int requestId, string approvedBy);
+        Task<bool> CompleteRequest(int requestId, string approvedBy);
         Task<List<RentRequestDTO>> GetAllRequest();
         Task<Request> UpdateRequestAsync(int id, RentRequestDTO requestDto);
         Task DeleteRequestAsync(int id);

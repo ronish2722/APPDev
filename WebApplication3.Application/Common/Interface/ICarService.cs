@@ -20,6 +20,6 @@ namespace WebApplication3.Application.Common.Interface
 
         Task DeleteCarAsync(int id);
 
-        //Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents);
+        Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents);
     }
 }

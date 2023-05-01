@@ -54,6 +54,34 @@ namespace WebApplication3.webapi.Controllers
             return result;
         }
 
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequestDTO model)
+        {
+            var user = await _userManager.FindByNameAsync(model.UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return Ok(new ResponseDTO()
+                {
+                    Message = "Password reset successful!",
+                    Status = "Success"
+                });
+            }
+
+            return BadRequest(new ResponseDTO()
+            {
+                Message = "Password reset failed! Please check reset details and try again.",
+                Status = "Error"
+            });
+        }
+
         [Authorize]
         [HttpGet("/api/authenticate/profile")]
         public async Task<ActionResult<UserResponse>> GetProfileAsync()

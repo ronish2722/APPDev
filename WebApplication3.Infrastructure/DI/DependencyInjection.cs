@@ -61,6 +61,7 @@ namespace WebApplication3.Infrastructure.DI
             services.AddTransient<IUserOffer, UserOfferService>();
             services.AddTransient<IPayment, PaymentService>();
             services.AddTransient<IStaff, StaffService>();
+            services.AddTransient<ICustomer, CustomerService>();
 
             return services;
 

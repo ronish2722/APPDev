@@ -47,13 +47,16 @@ namespace WebApplication3.Infrastructure.Services
 
         public async Task<List<OfferDTO>> GetAllOffer()
         {
-            var offers = await _dbContext.Offer.ToListAsync();
+            var offers = await _dbContext.Offer
+                .Include(o => o.StaffUser)
+                .ToListAsync();
             var offerDTOs = new List<OfferDTO>();
             foreach (var offer in offers)
             {
                 offerDTOs.Add(new OfferDTO
                 {
-                    CreatedBy = offer.CreatedBy,
+                    OfferId = offer.OfferId,
+                    CreatedBy = offer.StaffUser.UserName,
                     EndDate = offer.EndDate,
                     OfferDescription= offer.OfferDescription,
                     StartDate = offer.StartDate,

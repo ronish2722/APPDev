@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace WebApplication3.Application.Common.Interface
 {
     public interface IApplicationDBContext
     {
-       
+        DbSet<IdentityUser> Users { get; set; }
         DbSet<Address> Address { get; set; }
         DbSet<Attachment> Attachment { get; set; }
         DbSet<Car> Car { get; set; }

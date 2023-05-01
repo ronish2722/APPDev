@@ -39,7 +39,6 @@ var services = scope.ServiceProvider;
 await SeedIdentityData.InitializeAsync(services);
 
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

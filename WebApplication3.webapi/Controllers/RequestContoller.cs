@@ -35,11 +35,22 @@ namespace WebApplication3.webapi.Controllers
             return request;
         }
 
-        [HttpGet("GetRequestsByUser/")]
-        public async Task<ActionResult<List<Request>>> GetRequestByUser(string userId)
+        //[HttpGet("GetRequestsByUser/")]
+        //public async Task<ActionResult<List<Request>>> GetRequestByUser(string userId)
+        //{
+        //    var request = await _requestService.GetRequestByUser(userId);
+        //    return Ok(request);
+        //}
+
+        [HttpGet("GetRequestsByUser/{userId}")]
+        public async Task<IActionResult> GetRequestByUser(string userId, DateTime? fromDate = null, DateTime? toDate = null)
         {
-            var request = await _requestService.GetRequestByUser(userId);
-            return Ok(request);
+            var requestDTOs = await _requestService.GetRequestByUser(userId, fromDate, toDate);
+            if (requestDTOs == null || requestDTOs.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(requestDTOs);
         }
 
         [HttpGet("GetRequestsByCar/")]
@@ -93,6 +104,19 @@ namespace WebApplication3.webapi.Controllers
         public async Task<IActionResult> DeclineRequest(int id, string approvedBy)
         {
             var success = await _requestService.DeclineRequest(id, approvedBy);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/complete")]
+        public async Task<IActionResult> CompleteRequest(int id, string approvedBy)
+        {
+            var success = await _requestService.CompleteRequest(id, approvedBy);
 
             if (!success)
             {

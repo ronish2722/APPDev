@@ -76,6 +76,20 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
+        [HttpPut("cars/{id}/number-of-rents")]
+        public async Task<IActionResult> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents)
+        {
+            try
+            {
+                var car = await _carService.CountNumberOfRents(id, numberOfRents);
+                return Ok(car);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
     }

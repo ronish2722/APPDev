@@ -32,6 +32,14 @@ namespace WebApplication3.webapi.Controllers
             return result;
         }
 
+        [HttpPost]
+        [Route("/api/authenticate/addAdmin")]
+        public async Task<ResponseDTO> AddAdmin([FromBody] StaffDTO model)
+        {
+            var result = await _staffManager.AddAdmin(model);
+            return result;
+        }
+
         [HttpGet]
         [Route("/api/authenticate/getStaffDetails")]
         public async Task<IEnumerable<StaffDTO>> GetStaffDetails()

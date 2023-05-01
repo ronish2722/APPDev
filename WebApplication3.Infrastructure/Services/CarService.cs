@@ -52,6 +52,7 @@ namespace WebApplication3.Infrastructure.Services
             {
                 carDTOs.Add(new AddCarDTO
                 {
+                    CarId = car.CarId,
                     CarName = car.CarName,
                     Image = car.Image,
                     Brand = car.Brand,
@@ -59,6 +60,7 @@ namespace WebApplication3.Infrastructure.Services
                     Condition = car.Condition,
                     Description = car.Description,
                     NumberOfRents = (int)car.NumberOfRents,
+                    CarStatus = car.CarStatus,
                     CreatedBy = car.CreatedBy,
 
                     // Map other properties as needed
@@ -81,6 +83,7 @@ namespace WebApplication3.Infrastructure.Services
             car.Condition = carDto.Condition;
             car.Description = carDto.Description;
             car.NumberOfRents = carDto.NumberOfRents;
+            
             // Update other properties as needed
             await _dbContext.SaveChangesAsync();
             return car;
@@ -97,10 +100,23 @@ namespace WebApplication3.Infrastructure.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        //public async Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents)
-        //{ 
-        
-        //}
+        public async Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents)
+        {
+            var car = await _dbContext.Car.FindAsync(id);
+            if (car == null)
+            {
+                throw new Exception("Car not found");
+            }
+            int carID = id;
+            string status = "Completed";
+
+            int numberOfCompletedRents = _dbContext.Request.Count(r => r.CarID == carID && r.status == status);
+
+            car.NumberOfRents = numberOfCompletedRents;
+            await _dbContext.SaveChangesAsync();
+
+            return car;
+        }
 
 
 

@@ -8,6 +8,7 @@ namespace WebApplication3.Application.DTOs
 {
     public class AddCarDTO
     {
+        public int CarId { get; set; }
         public string CarName { get; set; }
 
         public string Image { get; set; }
@@ -19,6 +20,8 @@ namespace WebApplication3.Application.DTOs
         public string Condition { get; set; }
 
         public string Description { get; set; }
+
+        public string CarStatus { get; set; }
 
         public int NumberOfRents { get; set; }
 

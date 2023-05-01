@@ -8,6 +8,7 @@ namespace WebApplication3.Application.DTOs
 {
     public class OfferDTO
     {
+        public int OfferId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string type { get; set; }

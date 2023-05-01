@@ -31,8 +31,16 @@ namespace WebApplication3.Infrastructure.Services
                 DamageId = damageForm.DamageId
                 
             };
+
+            
             await _dbContext.DamageForm.AddAsync(damageFormDetails);
             await _dbContext.SaveChangesAsync();
+
+
+            // Update the relevant Payment record(s) with the new DamageId
+            
+
+
             return damageFormDetails;
         }
 

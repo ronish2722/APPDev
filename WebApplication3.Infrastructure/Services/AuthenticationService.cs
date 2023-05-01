@@ -54,7 +54,6 @@ namespace WebApplication3.Infrastructure.Services
             var result = await _userManager.CreateAsync(user, model.Password);
             await _userManager.AddToRoleAsync(user, "User");
 
-
             Address address = new Address()
             {
                 AddressName = model.AddressName,
@@ -98,7 +97,7 @@ namespace WebApplication3.Infrastructure.Services
             return new ResponseDTO { Status = "Success", Message = "User created successfully!" };
         }
 
-
+        
         public async Task<ResponseDTO> Login(UserLoginRequestDTO model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
@@ -118,6 +117,35 @@ namespace WebApplication3.Infrastructure.Services
                 Status = "Error"
             };
 
+        }
+
+        public async Task<ResponseDTO> ChangePassword(string userId, string currentPassword, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new ResponseDTO()
+                {
+                    Message = "User not found!",
+                    Status = "Error"
+                };
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+            if (result.Succeeded)
+            {
+                return new ResponseDTO()
+                {
+                    Message = "Password changed successfully!",
+                    Status = "Success"
+                };
+            }
+
+            return new ResponseDTO()
+            {
+                Message = "Failed to change password. Please check the current password and try again.",
+                Status = "Error"
+            };
         }
         public async Task<IEnumerable<UserDetailsDTO>> GetUserDetails()
         {
