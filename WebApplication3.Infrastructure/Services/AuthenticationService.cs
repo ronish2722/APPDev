@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -160,10 +161,11 @@ namespace WebApplication3.Infrastructure.Services
             return roles.ToList();
         }
 
-        public async Task<IEnumerable<UserDetailsDTO>> GetUserDetails()
+        public async Task<IEnumerable<UserDetailsResponse>> GetUserDetails()
         {
             var users = await _userManager.Users.Select(x => new
             {
+                x.Id,
                 x.Email,
                 x.UserName,
                 x.EmailConfirmed
@@ -171,26 +173,18 @@ namespace WebApplication3.Infrastructure.Services
 
             //either
             var userDetails = from userData in users
-                              select new UserDetailsDTO()
+                              select new UserDetailsResponse()
                               {
+                                  UserId = userData.Id,
                                   Email = userData.Email,
                                   UserName = userData.UserName,
                                   IsEmailConfirmed = userData.EmailConfirmed
                               };
 
-            //OR
-            var userDatas = new List<UserDetailsDTO>();
-            foreach (var item in users)
-            {
-                userDatas.Add(new UserDetailsDTO()
-                {
-                    Email = item.Email,
-                    UserName = item.UserName,
-                    IsEmailConfirmed = item.EmailConfirmed
-                });
-            }
+          
+            
 
-            return userDatas;
+            return userDetails;
         }
 
         public async Task<ResponseDTO> UpdateUserDetails(string id, UserDetailsDTO model)

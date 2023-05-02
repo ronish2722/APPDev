@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Application.Common.Interface;
@@ -19,6 +20,7 @@ namespace WebApplication3.webapi.Controllers
             _carService = carService;
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("Create")]
         public async Task<Car> AddCarDetails(AddCarDTO car) 
         {
@@ -36,6 +38,7 @@ namespace WebApplication3.webapi.Controllers
             return car;
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpGet("GetAllCars")]
         public async Task<ActionResult<List<Car>>> GetAllCars()
         {
@@ -43,6 +46,7 @@ namespace WebApplication3.webapi.Controllers
             return Ok(cars);
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCar(int id, [FromBody] AddCarDTO carDto)
         {
@@ -62,6 +66,7 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
@@ -90,6 +95,7 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpGet("Sales")]
         public async Task<ActionResult<List<CarSalesDTO>>> GetCarSales(DateTime? fromDate = null, DateTime? toDate = null)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Application.Common.Interface;
 using WebApplication3.Application.DTOs;
 using WebApplication3.Domain.Entities;
@@ -16,8 +17,8 @@ namespace WebApplication3.webapi.Controllers
             _damageRequest = damageRequest;
         }
 
-        
 
+        [Authorize(Policy = "User")]
         [HttpPost("Create")]
         public async Task<DamageNotice> AddDamageRequestDetails(DamageRequestDTO damageRequest)
         {

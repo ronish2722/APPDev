@@ -147,6 +147,7 @@ namespace WebApplication3.webapi.Controllers
             await _signInManager.SignOutAsync();
             return Ok();
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -159,6 +160,5 @@ namespace WebApplication3.webapi.Controllers
 
             return Ok(result.Message);
         }
-
     }
 }

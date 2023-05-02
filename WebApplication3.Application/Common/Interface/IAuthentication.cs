@@ -11,7 +11,9 @@ namespace WebApplication3.Application.Common.Interface
     {
         Task<ResponseDTO> Register(UserRegisterRequestDTO model);
         Task<ResponseDTO> Login(UserLoginRequestDTO model);
-        Task<IEnumerable<UserDetailsDTO>> GetUserDetails();
+        Task<IEnumerable<UserDetailsResponse>> GetUserDetails();
+
+       
 
         Task<ResponseDTO> ChangePassword(string userId, string currentPassword, string newPassword);
 

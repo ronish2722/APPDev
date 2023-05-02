@@ -5,6 +5,7 @@ using WebApplication3.Domain.Entities;
 
 namespace WebApplication3.webapi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AddressController : ControllerBase
