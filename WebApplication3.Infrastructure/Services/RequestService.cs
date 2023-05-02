@@ -287,6 +287,29 @@ namespace WebApplication3.Infrastructure.Services
             return requestDTOs;
         }
 
+        public async Task<List<RentRequestDTO>> GetRequestByUser(string userId)
+        {
+            var requests = _dbContext.Request.Where(r => r.UserId == userId );
+
+            
+            var requestsList = await requests.ToListAsync();
+
+            var requestDTOs = new List<RentRequestDTO>();
+            foreach (var request in requestsList)
+            {
+                requestDTOs.Add(new RentRequestDTO
+                {
+                    UserId = request.UserId,
+                    ApprovedBy = request.ApprovedBy,
+                    CarID = request.CarID,
+                    RequestedDate = request.RequestedDate,
+                    status = request.status,
+                    // Map other properties as needed
+                });
+            }
+            return requestDTOs;
+        }
+
 
         public async Task<List<RentRequestDTO>> GetRequestByCar(int carId)
         {

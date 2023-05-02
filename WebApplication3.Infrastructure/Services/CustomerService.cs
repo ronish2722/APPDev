@@ -54,6 +54,7 @@ namespace WebApplication3.Infrastructure.Services
                     Country = cau.Address.Country,
                     PostalCode = cau.Address.PostalCode,
                     PhoneNumber = cau.User.PhoneNumber,
+                    ActivityStatus = cau.Attachment.ActivityStatus,
                     DrivingLicenseOrCitizenship = cau.Attachment.DrivingLicense ?? cau.Attachment.Citizenship
                 })
             .ToListAsync();

@@ -44,10 +44,21 @@ namespace WebApplication3.webapi.Controllers
         //    return Ok(request);
         //}
 
-        [HttpGet("GetRequestsByUser/{userId}")]
+        [HttpGet("GetRequestsByUser/{userId}/datefiltering")]
         public async Task<IActionResult> GetRequestByUser(string userId, DateTime? fromDate = null, DateTime? toDate = null)
         {
             var requestDTOs = await _requestService.GetRequestByUser(userId, fromDate, toDate);
+            if (requestDTOs == null || requestDTOs.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(requestDTOs);
+        }
+
+        [HttpGet("GetRequestByUser/{userId}")]
+        public async Task<IActionResult> GetRequestByUser(string userId)
+        {
+            var requestDTOs = await _requestService.GetRequestByUser(userId);
             if (requestDTOs == null || requestDTOs.Count == 0)
             {
                 return NotFound();
@@ -88,7 +99,7 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("{id}/accept")]
         public async Task<IActionResult> AcceptRequest(int id, string approvedBy)
         {
@@ -102,7 +113,8 @@ namespace WebApplication3.webapi.Controllers
             return Ok();
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("{id}/decline")]
         public async Task<IActionResult> DeclineRequest(int id, string approvedBy)
         {
@@ -116,7 +128,7 @@ namespace WebApplication3.webapi.Controllers
             return Ok();
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("{id}/complete")]
         public async Task<IActionResult> CompleteRequest(int id, string approvedBy)
         {

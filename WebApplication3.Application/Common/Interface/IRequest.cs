@@ -15,6 +15,8 @@ namespace WebApplication3.Application.Common.Interface
 
         Task<List<RentRequestDTO>> GetRequestByUser(string userId, DateTime? fromDate, DateTime? toDate);
 
+        Task<List<RentRequestDTO>> GetRequestByUser(string userId);
+
         Task<List<RentRequestDTO>> GetRequestByCar(int carId);
 
         Task<bool> AcceptRequest(int requestId, string approvedBy);

@@ -21,6 +21,8 @@ namespace WebApplication3.Application.DTOs
 
         public int NumberOfRents { get; set; }
 
+        public string ActivityStatus { get; set; }
+
         public string PhoneNumber { get; set; }
 
         public string DrivingLicenseOrCitizenship { get; set; }
