@@ -204,5 +204,39 @@ namespace WebApplication3.Infrastructure.Services
 
             return new ResponseDTO { Status = "Success", Message = "User details updated successfully!" };
         }
+
+        public async Task<ResponseDTO> ChangePasswordAsync(string userId, ChangePasswordRequestDTO model)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return new ResponseDTO
+                {
+                    Status = "Error",
+                    Message =  "Failed to update user details!" 
+                };
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                // Sign the user out of all sessions after a password change
+                await _signInManager.SignOutAsync();
+
+                return new ResponseDTO
+                {
+                    Status = "Success",
+                    Message = "User details updated successfully!"
+                };
+            }
+
+            return new ResponseDTO
+            {
+                Status = "Error",
+                Message = "Failed to update user details!"
+            };
+        }
     }
 }

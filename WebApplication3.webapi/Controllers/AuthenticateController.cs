@@ -82,6 +82,20 @@ namespace WebApplication3.webapi.Controllers
             });
         }
 
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDTO request)
+        {
+            var response = await _authenticationManager.ChangePassword(request.UserId, request.CurrentPassword, request.NewPassword);
+
+            if (response.Status == "Success")
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+        }
+
+
         [Authorize]
         [HttpGet("/api/authenticate/profile")]
         public async Task<ActionResult<UserResponse>> GetProfileAsync()

@@ -17,6 +17,8 @@ namespace WebApplication3.Application.Common.Interface
 
         Task<ResponseDTO> UpdateUserDetails(string id, UserDetailsDTO model);
 
+        Task<ResponseDTO> ChangePasswordAsync(string userId, ChangePasswordRequestDTO model);
+
 
     }
 }
