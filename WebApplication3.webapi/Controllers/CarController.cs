@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace WebApplication3.webapi.Controllers
             _carService = carService;
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("Create")]
         public async Task<Car> AddCarDetails(AddCarDTO car) 
         {
@@ -38,7 +39,7 @@ namespace WebApplication3.webapi.Controllers
             return car;
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        [Authorize(Roles ="Admin")]
         [HttpGet("GetAllCars")]
         public async Task<ActionResult<List<Car>>> GetAllCars()
         {

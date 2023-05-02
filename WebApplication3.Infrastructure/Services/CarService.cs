@@ -50,6 +50,7 @@ namespace WebApplication3.Infrastructure.Services
             var carDTOs = new List<RequestCarDTO>();
             foreach (var car in cars)
             {
+                var createdByUser = await _dbContext.Users.FindAsync(car.CreatedBy);
                 carDTOs.Add(new RequestCarDTO
                 {
                     CarId = car.CarId,
@@ -62,7 +63,7 @@ namespace WebApplication3.Infrastructure.Services
                     NumberOfRents = (int)car.NumberOfRents,
                     CarStatus = car.CarStatus,
                     CreatedBy = car.CreatedBy,
-                    CreatedByUser = car.StaffUser.UserName
+                    CreatedByUser = createdByUser.UserName
 
                     // Map other properties as needed
                 });
