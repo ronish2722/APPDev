@@ -14,7 +14,7 @@ namespace WebApplication3.Application.Common.Interface
 
         Task<Car> GetCar(int id);
 
-        Task<List<AddCarDTO>> GetAllCars();
+        Task<List<RequestCarDTO>> GetAllCars();
          
         Task<Car> UpdateCarAsync(int id, AddCarDTO car);
 

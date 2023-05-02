@@ -87,7 +87,7 @@ namespace WebApplication3.Infrastructure.Services
         }
 
 
-        public async Task<IEnumerable<StaffDTO>> GetStaffDetails()
+        public async Task<IEnumerable<ResponseStaffDetails>> GetStaffDetails()
         {
             var users = await _userManager.Users.ToListAsync();
 
@@ -95,6 +95,7 @@ namespace WebApplication3.Infrastructure.Services
                 .Where(u => _userManager.GetRolesAsync(u).GetAwaiter().GetResult().Contains("Staff"))
                 .Select(x => new
                 {
+                    x.Id,
                     x.Email,
                     x.UserName,
                     x.PhoneNumber
@@ -103,11 +104,12 @@ namespace WebApplication3.Infrastructure.Services
 
 
 
-            var userDatas = new List<StaffDTO>();
+            var userDatas = new List<ResponseStaffDetails>();
             foreach (var item in staffUsers)
             {
-                userDatas.Add(new StaffDTO()
+                userDatas.Add(new ResponseStaffDetails()
                 {
+                    StaffId = item.Id,
                     Email = item.Email,
                     UserName = item.UserName,
                     PhoneNumber = item.PhoneNumber,

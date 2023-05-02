@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Application.Common.Interface;
 using WebApplication3.Application.DTOs;
 using WebApplication3.Domain.Entities;
@@ -17,6 +18,7 @@ namespace WebApplication3.webapi.Controllers
             _offerService = offerService;
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpPost]
         public async Task<Offer> CreateOfferAsync(OfferDTO offerDto)
         {
@@ -61,6 +63,8 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
+
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOffer(int id)
         {

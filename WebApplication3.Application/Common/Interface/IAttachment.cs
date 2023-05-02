@@ -15,6 +15,10 @@ namespace WebApplication3.Application.Common.Interface
 
         Task<Attachment> UpdateAttachmentFormAsync(int id, AttachmentDTO attachmentDto);
 
+        Task<string> UploadFileAsync(FileUploadRequestDTO fileUploadRequestDTO);
+
         Task DeleteAttachmentAsync(int id);
+
+       
     }
 }

@@ -44,13 +44,13 @@ namespace WebApplication3.Infrastructure.Services
             return car;
         }
 
-        public async Task<List<AddCarDTO>> GetAllCars()
+        public async Task<List<RequestCarDTO>> GetAllCars()
         {
             var cars = await _dbContext.Car.ToListAsync();
-            var carDTOs = new List<AddCarDTO>();
+            var carDTOs = new List<RequestCarDTO>();
             foreach (var car in cars)
             {
-                carDTOs.Add(new AddCarDTO
+                carDTOs.Add(new RequestCarDTO
                 {
                     CarId = car.CarId,
                     CarName = car.CarName,
@@ -62,6 +62,7 @@ namespace WebApplication3.Infrastructure.Services
                     NumberOfRents = (int)car.NumberOfRents,
                     CarStatus = car.CarStatus,
                     CreatedBy = car.CreatedBy,
+                    CreatedByUser = car.StaffUser.UserName
 
                     // Map other properties as needed
                 });

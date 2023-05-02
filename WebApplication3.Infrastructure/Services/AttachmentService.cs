@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace WebApplication3.Infrastructure.Services
     public class AttachmentService:IAttachment
     {
         private readonly IApplicationDBContext _dbContext;
+        private readonly string _uploadFolderPath;
 
 
-        public AttachmentService(IApplicationDBContext dBContext)
+        public AttachmentService(IApplicationDBContext dBContext, IConfiguration configuration)
         {
             _dbContext = dBContext;
+            _uploadFolderPath = configuration.GetValue<string>("FileUploadSettings:UploadFolderPath");
 
         }
         public async Task<Attachment> AddAttachmentDetails(AttachmentDTO attachment)
@@ -76,6 +79,29 @@ namespace WebApplication3.Infrastructure.Services
             return attachment;
         }
 
+        public async Task<string> UploadFileAsync(FileUploadRequestDTO fileUploadRequestDTO)
+        {
+            var filePath = Path.Combine(_uploadFolderPath, fileUploadRequestDTO.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await stream.WriteAsync(fileUploadRequestDTO.FileContent);
+            }
+
+            return filePath;
+        }
+
+        //public async Task<string> UploadAsync(IAttachment file) {
+        //    var fileName = file.FileName;
+
+        //    if (!IsAllowedFileType(Path.GetExtension(fileName)))
+        //        throw new Exception("Invalid file type");
+
+        //    if(file.Length >1 *1024 *1024)
+        //        throw new Exception("FIle size exceeds the limit");
+
+        //    return await _fileProvider.UploadFileAsync(file.FileName);
+        //}
         public async Task DeleteAttachmentAsync(int id)
         {
             var attachment = await _dbContext.Attachment.FindAsync(id);

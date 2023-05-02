@@ -95,6 +95,17 @@ namespace WebApplication3.webapi.Controllers
             return BadRequest(response);
         }
 
+        [HttpGet("{userId}/roles")]
+        public async Task<ActionResult<List<string>>> GetUserRoles(string userId)
+        {
+            var roles = await _authenticationManager.GetUserRoles(userId);
+            if (roles == null)
+            {
+                return NotFound();
+            }
+            return Ok(roles);
+        }
+
 
         [Authorize]
         [HttpGet("/api/authenticate/profile")]
@@ -136,6 +147,18 @@ namespace WebApplication3.webapi.Controllers
             await _signInManager.SignOutAsync();
             return Ok();
         }
-    
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var result = await _authenticationManager.DeleteUser(id);
+
+            if (result.Status == "Error")
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Message);
+        }
+
     }
 }

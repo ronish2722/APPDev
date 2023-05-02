@@ -19,6 +19,10 @@ namespace WebApplication3.Application.Common.Interface
 
         Task<ResponseDTO> ChangePasswordAsync(string userId, ChangePasswordRequestDTO model);
 
+        Task<List<string>> GetUserRoles(string userId);
+
+        Task<ResponseDTO> DeleteUser(string id);
+
 
     }
 }

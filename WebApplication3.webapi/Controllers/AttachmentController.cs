@@ -53,6 +53,32 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
+        [HttpPost("FileUpload")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Please select a file to upload.");
+            }
+
+            if (file.Length > 1536000)
+            {
+                return BadRequest("File size should not exceed 1.5 MB.");
+            }
+
+            var fileBytes = new byte[file.Length];
+            await file.OpenReadStream().ReadAsync(fileBytes, 0, fileBytes.Length);
+
+            var fileUploadRequestDTO = new FileUploadRequestDTO
+            {
+                FileName = file.FileName,
+                FileContent = fileBytes
+            };
+
+            var filePath = await _attachmentService.UploadFileAsync(fileUploadRequestDTO);
+
+            return Ok(new { FilePath = filePath });
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAttachment(int id)

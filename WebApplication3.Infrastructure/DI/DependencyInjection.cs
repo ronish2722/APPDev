@@ -62,6 +62,13 @@ namespace WebApplication3.Infrastructure.DI
             services.AddTransient<IPayment, PaymentService>();
             services.AddTransient<IStaff, StaffService>();
             services.AddTransient<ICustomer, CustomerService>();
+            services.AddTransient<IGmailEmailProvider, Email>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("StaffOrAdmin", policy =>
+                    policy.RequireRole("Staff", "Admin"));
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+            });
 
             return services;
 
@@ -88,6 +95,10 @@ namespace WebApplication3.Infrastructure.DI
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
+        }
+        public class FileUploadSettings
+        {
+            public string UploadFolderPath { get; set; }
         }
     }
 }

@@ -76,7 +76,7 @@ namespace WebApplication3.Infrastructure.Persistance
                     entity.HasOne(d => d.Address)
                         .WithMany()
                         .HasForeignKey(d => d.AddressID)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
                 modelBuilder.Entity<Car>(entity =>
@@ -91,7 +91,7 @@ namespace WebApplication3.Infrastructure.Persistance
                     entity.HasOne(e => e.StaffUser)
                         .WithMany()
                         .HasForeignKey(e => e.CreatedBy)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                     entity.Property(e => e.NumberOfRents).IsRequired().HasDefaultValue(0);
                     entity.Property(e => e.CarStatus).HasDefaultValue("Available");
 
@@ -126,13 +126,13 @@ namespace WebApplication3.Infrastructure.Persistance
                 entity.HasOne(e => e.StaffUser)
                     .WithMany()
                     .HasForeignKey(e => e.VerifiedBy)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Cascade);
                 entity.Property(e => e.Date).IsRequired();
                 entity.Property(e => e.description).HasMaxLength(500);
                 entity.HasOne(e => e.Damage)
                         .WithMany()
                         .HasForeignKey(e => e.DamageId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 entity.Property(e => e.Amount).IsRequired();
 
 
@@ -151,7 +151,7 @@ namespace WebApplication3.Infrastructure.Persistance
                     entity.HasOne(e => e.StaffUser)
                         .WithMany()
                         .HasForeignKey(e => e.CreatedBy)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.HasMany(e => e.UserOffers)
                         .WithOne(e => e.Offer)
@@ -168,7 +168,7 @@ namespace WebApplication3.Infrastructure.Persistance
                     entity.HasOne(e => e.User)
                         .WithMany()
                         .HasForeignKey(e => e.UserId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.HasOne(e => e.Requests)
                         .WithMany()
@@ -178,7 +178,7 @@ namespace WebApplication3.Infrastructure.Persistance
                     entity.HasOne(e => e.Damage)
                         .WithMany()
                         .HasForeignKey(e => e.DamageId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
                 modelBuilder.Entity<Request>(entity =>
@@ -191,17 +191,17 @@ namespace WebApplication3.Infrastructure.Persistance
                     entity.HasOne(e => e.User)
                         .WithMany()
                         .HasForeignKey(e => e.UserId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     entity.HasOne(e => e.StaffUser)
                         .WithMany()
                         .HasForeignKey(e => e.ApprovedBy)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     entity.HasOne(e => e.Car)
                         .WithMany()
                         .HasForeignKey(e => e.CarID)
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
 

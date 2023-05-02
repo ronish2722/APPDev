@@ -147,6 +147,19 @@ namespace WebApplication3.Infrastructure.Services
                 Status = "Error"
             };
         }
+
+        public async Task<List<string>> GetUserRoles(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new ArgumentException("User not found!");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.ToList();
+        }
+
         public async Task<IEnumerable<UserDetailsDTO>> GetUserDetails()
         {
             var users = await _userManager.Users.Select(x => new
@@ -237,6 +250,25 @@ namespace WebApplication3.Infrastructure.Services
                 Status = "Error",
                 Message = "Failed to update user details!"
             };
+        }
+
+        public async Task<ResponseDTO> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return new ResponseDTO { Status = "Error", Message = "User not found!" };
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return new ResponseDTO { Status = "Error", Message = "Failed to delete user!" };
+            }
+
+            return new ResponseDTO { Status = "Success", Message = "User deleted successfully!" };
         }
     }
 }

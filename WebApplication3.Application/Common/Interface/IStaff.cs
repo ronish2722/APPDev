@@ -11,7 +11,7 @@ namespace WebApplication3.Application.Common.Interface
     {
         Task<ResponseDTO> AddStaff(StaffDTO model);
         
-        Task<IEnumerable<StaffDTO>> GetStaffDetails();
+        Task<IEnumerable<ResponseStaffDetails>> GetStaffDetails();
 
         Task<ResponseDTO> UpdateStaffDetails(string id, StaffDTO model);
 

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using WebApplication3.Application.Common.Interface;
 using WebApplication3.Application.DTOs;
 using WebApplication3.Domain.Entities;
@@ -15,11 +17,13 @@ namespace WebApplication3.Infrastructure.Services
     {
         private readonly IApplicationDBContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IGmailEmailProvider _emailProvider;
 
-        public RequestService(IApplicationDBContext dBContext, UserManager<IdentityUser> userManager)
+        public RequestService(IApplicationDBContext dBContext, UserManager<IdentityUser> userManager, IGmailEmailProvider emailProvider)
         {
             _dbContext = dBContext;
             _userManager = userManager;
+            _emailProvider = emailProvider;
 
         }
 
@@ -91,10 +95,19 @@ namespace WebApplication3.Infrastructure.Services
 
         public async Task<bool> AcceptRequest(int requestId , string approvedBy)
         {
-            var request = await _dbContext.Request.FirstOrDefaultAsync(r => r.RequestId == requestId);
-
+            var request = await _dbContext.Request.Include(r => r.User).FirstOrDefaultAsync(r => r.RequestId == requestId);
+    
             var car = await _dbContext.Car.FirstOrDefaultAsync(r => r.CarId == request.CarID);
 
+            var message = new EmailMessage
+            {
+                Subject = "Car Rental Request Accepted",
+                To = request.User.Email,
+                Body = $@"Dear {request.User.UserName},
+                        Your request for the car {car.CarName} has been accepted"
+            };
+
+            
 
             request.status = "Accepted";
             request.ApprovedBy = approvedBy;
@@ -104,6 +117,8 @@ namespace WebApplication3.Infrastructure.Services
             car.CarStatus = "Not Available";
             _dbContext.Car.Update(car);
             await _dbContext.SaveChangesAsync();
+
+            await _emailProvider.SendEmailAsync(message);
 
             return true;
         }

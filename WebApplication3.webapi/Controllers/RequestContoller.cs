@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
 using WebApplication3.Application.Common.Interface;
 using WebApplication3.Application.DTOs;
@@ -86,7 +87,7 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
-
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("{id}/accept")]
         public async Task<IActionResult> AcceptRequest(int id, string approvedBy)
         {
@@ -100,6 +101,7 @@ namespace WebApplication3.webapi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("{id}/decline")]
         public async Task<IActionResult> DeclineRequest(int id, string approvedBy)
         {
@@ -113,6 +115,7 @@ namespace WebApplication3.webapi.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "StaffOrAdmin")]
         [HttpPost("{id}/complete")]
         public async Task<IActionResult> CompleteRequest(int id, string approvedBy)
         {
