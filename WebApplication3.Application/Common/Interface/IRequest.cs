@@ -25,6 +25,9 @@ namespace WebApplication3.Application.Common.Interface
         Task<Request> UpdateRequestAsync(int id, RentRequestDTO requestDto);
         Task DeleteRequestAsync(int id);
 
-        
+        Task CheckInactiveUsers();
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Specialized;
 using WebApplication3.Application.Common.Interface;
 using WebApplication3.Application.DTOs;
@@ -127,6 +128,20 @@ namespace WebApplication3.webapi.Controllers
             }
 
             return Ok();
+        }
+        [HttpPost("CheckInactiveUsers")]
+        public async Task<IActionResult> CheckInactiveUsers()
+        {
+            try
+            {
+                await _requestService.CheckInactiveUsers();
+                return Ok("Users checked successfully.");
+            }
+            catch (Exception ex)
+            {
+                // handle exception
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]

@@ -48,7 +48,7 @@ namespace WebApplication3.webapi.Controllers
 
         [HttpGet]
         [Route("/api/authenticate/getUserDetails")]
-        public async Task<IEnumerable<UserDetailsDTO>> GetUserDetails()
+        public async Task<IEnumerable<UserDetailsResponse>> GetUserDetails()
         {
             var result = await _authenticationManager.GetUserDetails();
             return result;

@@ -188,6 +188,28 @@ namespace WebApplication3.Infrastructure.Services
             return true;
         }
 
+        public async Task CheckInactiveUsers()
+        {
+            var users = await _dbContext.Attachment.ToListAsync();
+
+            foreach (var user in users)
+            {
+                var lastRequestDate = await _dbContext.Request
+                    .Where(r => r.UserId == user.UserId)
+                    .OrderByDescending(r => r.RequestedDate)
+                    .Select(r => r.RequestedDate)
+                    .FirstOrDefaultAsync();
+
+                if (lastRequestDate != default(DateTime) && (DateTime.Now - lastRequestDate).TotalDays > 90)
+                {
+                    // Set user as inactive
+                    user.ActivityStatus = "Inactive";
+                    _dbContext.Attachment.Update(user);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+        }
+
 
         //public async Task<List<RentRequestDTO>> GetRequestByUser(string userId)
         //{
