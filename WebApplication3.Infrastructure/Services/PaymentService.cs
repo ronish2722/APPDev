@@ -48,19 +48,32 @@ namespace WebApplication3.Infrastructure.Services
 
         public async Task<List<PaymentDTO>> GetAllPayment()
         {
-            var payments = await _dbContext.Payment.ToListAsync();
+            var payments = await _dbContext.Payment
+                 //.Include(p => p.Requests)
+                //.ThenInclude(r => r.Car)
+                //.Include(p => p.Damage)
+                .ToListAsync();
             var paymentDTOs = new List<PaymentDTO>();
             foreach (var payment in payments)
             {
+                //var user = await _dbContext.Users.FindAsync(payment.UserId);
+                //var carName = payment.Requests.Car.CarName;
+                //var damageAmount = payment.Damage?.Amount;
+
                 paymentDTOs.Add(new PaymentDTO
                 {
                     UserId = payment.UserId, //need to be changed according to user
+                    //UserName = user?.UserName,
                     RequestsId = payment.RequestsId,
+                    //CarName = carName,
                     Amount = payment.Amount,
+
                     DamageId = payment.DamageId,
-                   
+                    //DamageAmount = (float)damageAmount,
+                    PaymentInfo = payment.PaymentInfo,
+
                     // Map other properties as needed
-                });
+                }); 
             }
             return paymentDTOs;
         }

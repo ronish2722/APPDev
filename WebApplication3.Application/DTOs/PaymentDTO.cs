@@ -15,7 +15,13 @@ namespace WebApplication3.Application.DTOs
         
         public int RequestsId { get; set; }
 
+        public string UserName { get; set; }
+
         public string? PaymentInfo { get; set; }
+
+        public string CarName { get; set; }
+
+        public float? DamageAmount { get; set; }
 
         public float Amount { get; set; }
 

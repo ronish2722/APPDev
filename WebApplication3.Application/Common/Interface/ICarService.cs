@@ -21,5 +21,7 @@ namespace WebApplication3.Application.Common.Interface
         Task DeleteCarAsync(int id);
 
         Task<Car> CountNumberOfRents(int id, NumberOfRentsDTO numberOfRents);
+
+        Task<List<CarSalesDTO>> GetCarSales(DateTime? startDate, DateTime? endDate);
     }
 }

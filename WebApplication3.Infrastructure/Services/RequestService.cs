@@ -63,15 +63,24 @@ namespace WebApplication3.Infrastructure.Services
 
         public async Task<List<RentRequestDTO>> GetAllRequest()
         {
-            var requests = await _dbContext.Request.ToListAsync();
+            var requests = await _dbContext.Request
+                 .Include(r => r.User)
+                .Include(r => r.StaffUser)
+                .Include(r => r.Car)
+                 .ToListAsync();
             var requestDTOs = new List<RentRequestDTO>();
             foreach (var request in requests)
             {
+                var user = await _userManager.FindByIdAsync(request.User.Id);
+                var approvedByUser = await _userManager.FindByIdAsync(request.User.Id);
                 requestDTOs.Add(new RentRequestDTO
                 {
-                    UserId = request.UserId, //need to be changed according to user
+                    UserId = request.User.Id, 
+                    UserName = request.User.UserName,//need to be changed according to user
                     ApprovedBy = request.ApprovedBy,
+                    StaffName = request.StaffUser?.UserName,
                     CarID = request.CarID,
+                    CarName = request.Car.CarName,
                     RequestedDate = request.RequestedDate,
                     status =request.status,
                     // Map other properties as needed
@@ -119,24 +128,36 @@ namespace WebApplication3.Infrastructure.Services
             var user = await _dbContext.Attachment.FirstOrDefaultAsync(r => r.UserId == request.UserId);
             var currentUser = await _userManager.FindByIdAsync(request.UserId);
 
-            float discountPercent = currentUser != null && await _userManager.IsInRoleAsync(currentUser, "Staff") ? 0.75f : 0.9f;
+            //User rented car more than 5 times this month
+            DateTime today = DateTime.Today;
+            int rentedCarsThisMonth = _dbContext.Request
+                .Where(r => r.UserId == currentUser.Id && r.RequestedDate.Month == today.Month && r.status=="Completed")
+                .Count();
 
-            float amount = request.Car.Price - (request.Car.Price * discountPercent);
+            //Calculating discount
+            float discountPercent = currentUser != null && await _userManager.IsInRoleAsync(currentUser, "Staff") ? 0.75f : rentedCarsThisMonth > 5 ? 0.1f : 1f; 
 
+            float amount = request.Car.Price * discountPercent;
+
+            //Updating requests status
             request.status = "Completed";
             request.ApprovedBy = approvedBy;
             _dbContext.Request.Update(request);
             await _dbContext.SaveChangesAsync();
 
+
+            //Updating car status
             car.CarStatus = "Available";
-            car.NumberOfRents = +1;
+            car.NumberOfRents = car.NumberOfRents+1;
             _dbContext.Car.Update(car);
             await _dbContext.SaveChangesAsync();
 
-            user.NumberOfRents = +1;
+            //Adding number of rents
+            user.NumberOfRents++;
             _dbContext.Attachment.Update(user);
             await _dbContext.SaveChangesAsync();
-
+            
+            //Creating payment
             Payment payment = new Payment()
             {
                 UserId = request.UserId,

@@ -118,6 +118,95 @@ namespace WebApplication3.Infrastructure.Services
             return car;
         }
 
+        //public async Task<List<CarSalesDTO>> GetCarSales()
+        //{
+        //    var cars = await _dbContext.Car.ToListAsync();
+        //    var carSalesDTOs = new List<CarSalesDTO>();
+        //    foreach (var car in cars)
+        //    {
+        //        //var requests = await _dbContext.Request
+        //        //    .Where(r => r.CarID == car.CarId && r.status == "Completed")
+        //        //    .ToListAsync();
+
+        //        var carSales = await _dbContext.Request
+        //            .Where(r => r.CarID == car.CarId && r.status == "Completed")
+        //            .Join(_dbContext.Payment,
+        //                r => r.RequestId,
+        //                p => p.RequestsId,
+        //                (r, p) => new { Request = r, Payment = p })
+        //            .GroupBy(rp => rp.Request.CarID)
+        //            .Select(g => new { CarID = g.Key, TotalSales = g.Sum(rp => rp.Payment.Amount) })
+        //            .FirstOrDefaultAsync();
+
+        //        var customers = await _dbContext.Users
+        //            .Join(_dbContext.Request,
+        //                u => u.Id,
+        //                r => r.UserId,
+
+        //                (u, r) => new { Users = u, Request = r })
+        //            .Where(r=>r.Request.CarID ==car.CarId && r.Request.status == "Completed")
+
+        //            .Select(x => x.Users.UserName)
+        //            .ToListAsync();
+
+        //        carSalesDTOs.Add(new CarSalesDTO
+        //        {
+        //            CarId = car.CarId,
+        //            CarName = car.CarName,
+        //            CarBrand =car.Brand,
+        //            CarCondition =car.Condition,
+        //            CarPrice=car.Price,
+        //            Customers = customers,
+        //            TotalSales = (float)(carSales?.TotalSales ?? 0)
+
+
+        //        });
+        //    }
+        //    return carSalesDTOs;
+        //}
+
+        public async Task<List<CarSalesDTO>> GetCarSales(DateTime? startDate, DateTime? endDate)
+        {
+            var cars = await _dbContext.Car.ToListAsync();
+            var carSalesDTOs = new List<CarSalesDTO>();
+            foreach (var car in cars)
+            {
+                var carSales = await _dbContext.Request
+                    .Where(r => r.CarID == car.CarId && r.status == "Completed" && r.RequestedDate >= startDate && r.RequestedDate <= endDate)
+                    .Join(_dbContext.Payment,
+                        r => r.RequestId,
+                        p => p.RequestsId,
+                        (r, p) => new { Request = r, Payment = p })
+                    .Where(rp => rp.Request.RequestedDate >= startDate && rp.Request.RequestedDate <= endDate)
+                    .GroupBy(rp => rp.Request.CarID)
+                    .Select(g => new { CarID = g.Key, TotalSales = g.Sum(rp => rp.Payment.Amount) })
+                    .FirstOrDefaultAsync();
+
+                var customers = await _dbContext.Users
+                    .Join(_dbContext.Request,
+                        u => u.Id,
+                        r => r.UserId,
+
+                                (u, r) => new { Users = u, Request = r })
+                            .Where(r => r.Request.CarID == car.CarId && r.Request.status == "Completed" && r.Request.RequestedDate >= startDate && r.Request.RequestedDate <= endDate)
+
+                            .Select(x => x.Users.UserName)
+                            .ToListAsync();
+
+                carSalesDTOs.Add(new CarSalesDTO
+                {
+                    CarId = car.CarId,
+                    CarName = car.CarName,
+                    CarBrand = car.Brand,
+                    CarCondition = car.Condition,
+                    CarPrice = car.Price,
+                    Customers = customers,
+                    TotalSales = (float)(carSales?.TotalSales ?? 0)
+                });
+            }
+            return carSalesDTOs;
+        }
+
 
 
     }

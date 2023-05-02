@@ -90,6 +90,13 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
+        [HttpGet("Sales")]
+        public async Task<ActionResult<List<CarSalesDTO>>> GetCarSales(DateTime? fromDate = null, DateTime? toDate = null)
+        {
+            var carSales = await _carService.GetCarSales(fromDate, toDate);
+            return Ok(carSales);
+        }
+
 
 
     }
