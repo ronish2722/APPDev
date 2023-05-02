@@ -39,7 +39,7 @@ namespace WebApplication3.webapi.Controllers
             return car;
         }
 
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         [HttpGet("GetAllCars")]
         public async Task<ActionResult<List<Car>>> GetAllCars()
         {
@@ -47,7 +47,7 @@ namespace WebApplication3.webapi.Controllers
             return Ok(cars);
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCar(int id, [FromBody] AddCarDTO carDto)
         {
@@ -67,7 +67,7 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
@@ -96,7 +96,7 @@ namespace WebApplication3.webapi.Controllers
             }
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpGet("Sales")]
         public async Task<ActionResult<List<CarSalesDTO>>> GetCarSales(DateTime? fromDate = null, DateTime? toDate = null)
         {

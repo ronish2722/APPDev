@@ -259,14 +259,18 @@ namespace WebApplication3.Infrastructure.Services
         {
             var requests = _dbContext.Request.Where(r => r.UserId == userId && r.status == "Completed");
 
-            if (fromDate.HasValue)
-            {
-                requests = requests.Where(r => r.RequestedDate >= fromDate.Value);
-            }
 
-            if (toDate.HasValue)
+            if (fromDate.HasValue || toDate.HasValue)
             {
-                requests = requests.Where(r => r.RequestedDate <= toDate.Value);
+                if (fromDate.HasValue)
+                {
+                    requests = requests.Where(r => r.RequestedDate >= fromDate.Value);
+                }
+
+                if (toDate.HasValue)
+                {
+                    requests = requests.Where(r => r.RequestedDate <= toDate.Value);
+                }
             }
 
             var requestsList = await requests.ToListAsync();
