@@ -40,7 +40,7 @@ namespace WebApplication3.webapi.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("/api/authenticate/login")]
-        public async Task<ResponseDTO> Login([FromBody] UserLoginRequestDTO user)
+        public async Task<LoginResponseDTO> Login([FromBody] UserLoginRequestDTO user)
         {
             var result = await _authenticationManager.Login(user);
             return result;

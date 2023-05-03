@@ -10,7 +10,7 @@ namespace WebApplication3.Application.Common.Interface
     public interface IAuthentication
     {
         Task<ResponseDTO> Register(UserRegisterRequestDTO model);
-        Task<ResponseDTO> Login(UserLoginRequestDTO model);
+        Task<LoginResponseDTO> Login(UserLoginRequestDTO model);
         Task<IEnumerable<UserDetailsResponse>> GetUserDetails();
 
        

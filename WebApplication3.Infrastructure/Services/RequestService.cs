@@ -65,20 +65,21 @@ namespace WebApplication3.Infrastructure.Services
             return request; 
         }
 
-        public async Task<List<RentRequestDTO>> GetAllRequest()
+        public async Task<List<RequestResponseDTO>> GetAllRequest()
         {
             var requests = await _dbContext.Request
                  .Include(r => r.User)
                 .Include(r => r.StaffUser)
                 .Include(r => r.Car)
                  .ToListAsync();
-            var requestDTOs = new List<RentRequestDTO>();
+            var requestDTOs = new List<RequestResponseDTO>();
             foreach (var request in requests)
             {
                 var user = await _userManager.FindByIdAsync(request.User.Id);
                 var approvedByUser = await _userManager.FindByIdAsync(request.User.Id);
-                requestDTOs.Add(new RentRequestDTO
+                requestDTOs.Add(new RequestResponseDTO
                 {
+                    RequestId = request.RequestId,
                     UserId = request.User.Id, 
                     UserName = request.User.UserName,//need to be changed according to user
                     ApprovedBy = request.ApprovedBy,

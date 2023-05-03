@@ -23,7 +23,7 @@ namespace WebApplication3.Application.Common.Interface
 
         Task<bool> DeclineRequest(int requestId, string approvedBy);
         Task<bool> CompleteRequest(int requestId, string approvedBy);
-        Task<List<RentRequestDTO>> GetAllRequest();
+        Task<List<RequestResponseDTO>> GetAllRequest();
         Task<Request> UpdateRequestAsync(int id, RentRequestDTO requestDto);
         Task DeleteRequestAsync(int id);
 

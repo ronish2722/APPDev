@@ -99,20 +99,30 @@ namespace WebApplication3.Infrastructure.Services
         }
 
         
-        public async Task<ResponseDTO> Login(UserLoginRequestDTO model)
+        public async Task<LoginResponseDTO> Login(UserLoginRequestDTO model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
 
+            var user = await _userManager.FindByNameAsync(model.UserName);
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleList = string.Join(", ", roles);
+
             if (result.Succeeded)
+
+            
             {
-                return new ResponseDTO()
+                return new LoginResponseDTO()
                 {
-                    Message = "User logged in!",
-                    Status = "Success"
+                    Message = $"User logged in!",
+                    Status = "Success",
+                    UserID = user.Id,
+                    Role = roleList
+
                 };
             }
 
-            return new ResponseDTO()
+            return new LoginResponseDTO()
             {
                 Message = "User login failed! Please check user details and try again.!",
                 Status = "Error"

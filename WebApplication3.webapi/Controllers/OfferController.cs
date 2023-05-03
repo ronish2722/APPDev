@@ -18,7 +18,7 @@ namespace WebApplication3.webapi.Controllers
             _offerService = offerService;
         }
 
-        [Authorize(Policy = "StaffOrAdmin")]
+        //[Authorize(Policy = "StaffOrAdmin")]
         [HttpPost]
         public async Task<Offer> CreateOfferAsync(OfferDTO offerDto)
         {

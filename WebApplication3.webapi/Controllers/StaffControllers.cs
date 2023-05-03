@@ -31,7 +31,7 @@ namespace WebApplication3.webapi.Controllers
             var result = await _staffManager.AddStaff(model);
             return result;
         }
-        [Authorize(Policy = "OnlyAdmin")]
+        //[Authorize(Policy = "OnlyAdmin")]
         [HttpPost]
         [Route("/api/authenticate/addAdmin")]
         public async Task<ResponseDTO> AddAdmin([FromBody] StaffDTO model)
@@ -40,7 +40,7 @@ namespace WebApplication3.webapi.Controllers
             return result;
         }
 
-        [Authorize(Policy = "OnlyAdmin")]
+        //[Authorize(Policy = "OnlyAdmin")]
         [HttpGet]
         [Route("/api/authenticate/getStaffDetails")]
         public async Task<IEnumerable<ResponseStaffDetails>> GetStaffDetails()
@@ -49,7 +49,7 @@ namespace WebApplication3.webapi.Controllers
             return result;
         }
 
-        [Authorize(Policy = "OnlyAdmin")]
+        //[Authorize(Policy = "OnlyAdmin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStaffDetails(string id, StaffDTO model)
         {
