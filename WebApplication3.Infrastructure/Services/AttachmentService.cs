@@ -23,6 +23,8 @@ namespace WebApplication3.Infrastructure.Services
             _uploadFolderPath = configuration.GetValue<string>("FileUploadSettings:UploadFolderPath");
 
         }
+
+        //Adding attachments
         public async Task<Attachment> AddAttachmentDetails(AttachmentDTO attachment)
         {
             var attachmentDetails = new Attachment()
@@ -39,12 +41,15 @@ namespace WebApplication3.Infrastructure.Services
             return attachmentDetails;
         }
 
+
+        //Getting attachments according to user
         public async Task<List<AttachmentDTO>> GetAttachmentByUser(string userId)
         {
             var attachments = await _dbContext.Attachment
                .Where(r => r.UserId == userId)
                .ToListAsync();
 
+            //Putting in a list
             var attachmentDTOs = new List<AttachmentDTO>();
             foreach (var attachment in attachments)
             {
@@ -61,7 +66,7 @@ namespace WebApplication3.Infrastructure.Services
             return attachmentDTOs;
         }
 
-
+        //Updating attachemnt
         public async Task<Attachment> UpdateAttachmentFormAsync(int id, AttachmentDTO attachmentDto)
         {
             var attachment = await _dbContext.Attachment.FindAsync(id);

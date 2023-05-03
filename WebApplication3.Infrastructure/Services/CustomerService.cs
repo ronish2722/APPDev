@@ -32,6 +32,8 @@ namespace WebApplication3.Infrastructure.Services
             //_attachmentService
         }
 
+        //GEt customer detials
+
         public async Task<IEnumerable<CustomerResponseDTO>> GetCustomerDetails()
         {
             var customers = await _dbContext.Attachment

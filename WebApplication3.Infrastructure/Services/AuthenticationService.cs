@@ -37,6 +37,8 @@ namespace WebApplication3.Infrastructure.Services
 
 
         }
+
+        //Registering user
         public async Task<ResponseDTO> Register(UserRegisterRequestDTO model)
         {
             var userExists = await _userManager.FindByNameAsync(model.UserName);
@@ -44,6 +46,7 @@ namespace WebApplication3.Infrastructure.Services
             if (userExists != null)
                 return new ResponseDTO { Status = "Error", Message = "User already exists!" };
 
+            //Creating a user
             IdentityUser user = new()
             {
                 Email = model.Email,
@@ -55,6 +58,7 @@ namespace WebApplication3.Infrastructure.Services
             var result = await _userManager.CreateAsync(user, model.Password);
             await _userManager.AddToRoleAsync(user, "User");
 
+            //Adding address in address table of the user
             Address address = new Address()
             {
                 AddressName = model.AddressName,
@@ -67,6 +71,7 @@ namespace WebApplication3.Infrastructure.Services
             await _dbContext.SaveChangesAsync();
 
 
+            //Adding attachment of the user
             Domain.Entities.Attachment attachment1 = new Domain.Entities.Attachment()
             {
                 DrivingLicense = model.CitizenshipOrDrivingLicense,
@@ -99,12 +104,14 @@ namespace WebApplication3.Infrastructure.Services
         }
 
         
+        //Login
         public async Task<LoginResponseDTO> Login(UserLoginRequestDTO model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
 
             var user = await _userManager.FindByNameAsync(model.UserName);
 
+            //to get role of the user
             var roles = await _userManager.GetRolesAsync(user);
             var roleList = string.Join(", ", roles);
 
@@ -130,6 +137,8 @@ namespace WebApplication3.Infrastructure.Services
 
         }
 
+
+        //Change Password
         public async Task<ResponseDTO> ChangePassword(string userId, string currentPassword, string newPassword)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -171,6 +180,8 @@ namespace WebApplication3.Infrastructure.Services
             return roles.ToList();
         }
 
+
+        //getuserDetails 
         public async Task<IEnumerable<UserDetailsResponse>> GetUserDetails()
         {
             var users = await _userManager.Users.Select(x => new
@@ -256,6 +267,8 @@ namespace WebApplication3.Infrastructure.Services
             };
         }
 
+
+        //Deleting a user
         public async Task<ResponseDTO> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);

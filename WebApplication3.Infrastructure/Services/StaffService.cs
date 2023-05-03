@@ -26,6 +26,8 @@ namespace WebApplication3.Infrastructure.Services
 
 
         }
+
+        //Addstaff
         public async Task<ResponseDTO> AddStaff(StaffDTO model)
         {
             var userExists = await _userManager.FindByNameAsync(model.UserName);
@@ -55,7 +57,7 @@ namespace WebApplication3.Infrastructure.Services
 
             return new ResponseDTO { Status = "Success", Message = "Staff created successfully!" };
         }
-
+        //AddAdmin
         public async Task<ResponseDTO> AddAdmin(StaffDTO model)
         {
             var userExists = await _userManager.FindByNameAsync(model.UserName);
@@ -87,12 +89,13 @@ namespace WebApplication3.Infrastructure.Services
         }
 
 
+        //Get staff details
         public async Task<IEnumerable<ResponseStaffDetails>> GetStaffDetails()
         {
             var users = await _userManager.Users.ToListAsync();
 
             var staffUsers = users
-                .Where(u => _userManager.GetRolesAsync(u).GetAwaiter().GetResult().Contains("Staff"))
+                .Where(u => _userManager.GetRolesAsync(u).GetAwaiter().GetResult().Contains("Staff") || _userManager.GetRolesAsync(u).GetAwaiter().GetResult().Contains("Admin"))
                 .Select(x => new
                 {
                     x.Id,

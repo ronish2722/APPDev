@@ -21,6 +21,8 @@ namespace WebApplication3.Infrastructure.Services
             _dbContext = dBContext;
             
         }
+
+        //For Adding car
         public async Task<Car> AddCarDetails(AddCarDTO car)
         {
             var carDetails = new Car()
@@ -39,10 +41,15 @@ namespace WebApplication3.Infrastructure.Services
             return carDetails;
         }
 
+
+        //Getting  cars according to car id
         public async Task<Car> GetCar(int id) { 
             var car = await _dbContext.Car.FindAsync(id);
             return car;
         }
+
+
+        //getting all cars
 
         public async Task<List<RequestCarDTO>> GetAllCars()
         {
@@ -50,6 +57,7 @@ namespace WebApplication3.Infrastructure.Services
             var carDTOs = new List<RequestCarDTO>();
             foreach (var car in cars)
             {
+                //Adding in list
                 var createdByUser = await _dbContext.Users.FindAsync(car.CreatedBy);
                 carDTOs.Add(new RequestCarDTO
                 {
@@ -71,6 +79,7 @@ namespace WebApplication3.Infrastructure.Services
             return carDTOs;
         }
 
+        //Updating car
         public async Task<Car> UpdateCarAsync(int id, AddCarDTO carDto)
         {
             var car = await _dbContext.Car.FindAsync(id);
@@ -91,6 +100,7 @@ namespace WebApplication3.Infrastructure.Services
             return car;
         }
 
+        //Deleting car
         public async Task DeleteCarAsync(int id)
         {
             var car = await _dbContext.Car.FindAsync(id);
@@ -167,6 +177,8 @@ namespace WebApplication3.Infrastructure.Services
         //    return carSalesDTOs;
         //}
 
+
+        //Get car sales
         public async Task<List<CarSalesDTO>> GetCarSales(DateTime? startDate, DateTime? endDate)
         {
             var cars = await _dbContext.Car.ToListAsync();

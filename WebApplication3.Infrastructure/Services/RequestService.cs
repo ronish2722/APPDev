@@ -27,6 +27,8 @@ namespace WebApplication3.Infrastructure.Services
 
         }
 
+
+        //Cerate requests
         public async Task<Request> CreateRequestAsync(RentRequestDTO requestDto)
         {
             var requestDetails = new Request()
@@ -94,11 +96,14 @@ namespace WebApplication3.Infrastructure.Services
             return requestDTOs;
         }
 
+        //For accepting request
         public async Task<bool> AcceptRequest(int requestId , string approvedBy)
         {
             var request = await _dbContext.Request.Include(r => r.User).FirstOrDefaultAsync(r => r.RequestId == requestId);
     
             var car = await _dbContext.Car.FirstOrDefaultAsync(r => r.CarId == request.CarID);
+
+            //For sending email
 
             var message = new EmailMessage
             {
@@ -108,13 +113,14 @@ namespace WebApplication3.Infrastructure.Services
                         Your request for the car {car.CarName} has been accepted"
             };
 
-            
+            //Updating status
 
             request.status = "Accepted";
             request.ApprovedBy = approvedBy;
             _dbContext.Request.Update(request);
             await _dbContext.SaveChangesAsync();
 
+            //Updating car status
             car.CarStatus = "Not Available";
             _dbContext.Car.Update(car);
             await _dbContext.SaveChangesAsync();
@@ -124,6 +130,8 @@ namespace WebApplication3.Infrastructure.Services
             return true;
         }
 
+
+        //Decline request
         public async Task<bool> DeclineRequest(int requestId,  string approvedBy)
         {
             var request = await _dbContext.Request.FirstOrDefaultAsync(r => r.RequestId == requestId);
@@ -137,6 +145,8 @@ namespace WebApplication3.Infrastructure.Services
             return true;
         }
 
+
+        //COmplete Request
         public async Task<bool> CompleteRequest(int requestId, string approvedBy)
         {
             var request = await _dbContext.Request.FirstOrDefaultAsync(r => r.RequestId == requestId);

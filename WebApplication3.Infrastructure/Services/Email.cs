@@ -18,6 +18,7 @@ namespace WebApplication3.Infrastructure.Services
             private readonly string _from;
              private readonly SmtpClient _client;
 
+        //To sent email
              public Email(IConfiguration configuration)
                     {
                         var userName = configuration.GetSection("GmailCredentials:UserName").Value!;
