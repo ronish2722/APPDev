@@ -34,6 +34,7 @@ namespace WebApplication3.webapi.Controllers
         public async Task<ResponseDTO> Register([FromBody] UserRegisterRequestDTO model)
         {
             var result = await _authenticationManager.Register(model);
+            
             return result;
         }
 

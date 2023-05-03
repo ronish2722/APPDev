@@ -199,6 +199,8 @@ namespace WebApplication3.Infrastructure.Services
             return true;
         }
 
+
+        //Checking inactive users
         public async Task CheckInactiveUsers()
         {
             var users = await _dbContext.Attachment.ToListAsync();

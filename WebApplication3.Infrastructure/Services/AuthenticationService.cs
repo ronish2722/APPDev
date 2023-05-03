@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,8 @@ namespace WebApplication3.Infrastructure.Services
         private readonly IApplicationDBContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+
+
         //private readonly AttachmentService _attachmentService;
 
 
@@ -33,6 +36,7 @@ namespace WebApplication3.Infrastructure.Services
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
+            
             //_attachmentService
 
 
@@ -75,12 +79,19 @@ namespace WebApplication3.Infrastructure.Services
             Domain.Entities.Attachment attachment1 = new Domain.Entities.Attachment()
             {
                 DrivingLicense = model.CitizenshipOrDrivingLicense,
-                Citizenship = "string",
+                //Citizenship = "string",
                 NumberOfRents = 0,
                 ActivityStatus = "Active",
                 UserId = user.Id,
                 AddressID = address.AddressId,
             };
+
+            //file size validation
+            if (model.CitizenshipOrDrivingLicense?.Length > 1500 * 1024)
+            {
+                return new ResponseDTO { Status = "Error", Message = "The file size cannot exceed 1.5 MB." };
+            }
+
             _dbContext.Attachment.Add(attachment1);
 
             await _dbContext.SaveChangesAsync();
